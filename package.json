@@ -1,64 +1,28 @@
 {
   "name": "tracky",
   "version": "1.0.0",
-  "description": "Tracky - Local Finance Tracker Desktop Application",
+  "description": "Tracky - Local Finance Tracker",
   "private": true,
-  "main": "electron/main.js",
   "type": "commonjs",
   "author": "LouaySassi",
   "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:frontend": "vite",
     "dev:backend": "node server/index.js",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "build:frontend": "vite build",
-    "build:electron": "npm run build:frontend && electron-builder",
-    "start": "electron .",
+    "build": "vite build",
+    "start": "node server/index.js",
     "preview": "vite preview"
   },
-  "build": {
-    "appId": "com.tracky.app",
-    "productName": "Tracky",
-    "directories": {
-      "output": "C:/Users/LouaySassi/Desktop/Tracky-Build"
-    },
-    "files": [
-      "dist/**/*",
-      "server/**/*",
-      "electron/**/*",
-      "node_modules/**/*",
-      "package.json"
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": ["x64"]
-        }
-      ],
-      "icon": "public/icon.ico",
-      "artifactName": "Tracky-Setup-${version}.${ext}"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "installerIcon": "public/icon.ico",
-      "uninstallerIcon": "public/icon.ico",
-      "installerHeaderIcon": "public/icon.ico",
-      "deleteAppDataOnUninstall": false,
-      "shortcutName": "Tracky"
-    }
-  },
   "dependencies": {
+    "better-sqlite3": "^11.5.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "lucide-react": "^0.522.0",
+    "open": "^10.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
-    "lucide-react": "^0.522.0",
-    "recharts": "^2.12.7",
-    "express": "^4.21.1",
-    "cors": "^2.8.5",
-    "better-sqlite3": "^11.5.0"
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
     "@types/node": "^20.11.18",
@@ -69,8 +33,6 @@
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "latest",
     "concurrently": "^9.1.0",
-    "electron": "^32.2.0",
-    "electron-builder": "^25.1.7",
     "eslint": "^8.50.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",

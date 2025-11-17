@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { exec } = require('child_process');
 const { dbPath } = require('./database');
 
 const app = express();
@@ -40,12 +41,33 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
+// Function to open browser
+function openBrowser(url) {
+  const command = `start "" "${url}"`;
+  exec(command, (error) => {
+    if (error) {
+      console.error('⚠️  Could not open browser automatically.');
+      console.log(`📌 Please open manually: ${url}\n`);
+    } else {
+      console.log('✅ Browser opened!\n');
+      console.log('💡 Keep this window open while using Tracky');
+      console.log('⚠️  Close this window to stop the server\n');
+    }
+  });
+}
+
 // Start server
 const server = app.listen(PORT, () => {
   console.log(`\n💰 Tracky Server Running!`);
   console.log(`📊 Dashboard: http://localhost:${PORT}`);
   console.log(`💾 Database: ${dbPath}`);
-  console.log(`⏰ Started: ${new Date().toLocaleString()}\n`);
+  console.log(`⏰ Started: ${new Date().toLocaleString()}`);
+  console.log(`\n🌐 Opening in your browser...\n`);
+  
+  // Auto-open browser after 1 second
+  setTimeout(() => {
+    openBrowser(`http://localhost:${PORT}`);
+  }, 1000);
 });
 
 // Graceful shutdown
@@ -53,6 +75,23 @@ process.on('SIGTERM', () => {
   console.log('SIGTERM received, closing server...');
   server.close(() => {
     console.log('Server closed');
+    process.exit(0);
+  });
+});
+
+// Handle Ctrl+C
+process.on('SIGINT', () => {
+  console.log('\n\n👋 Shutting down Tracky...');
+  server.close(() => {
+    console.log('✅ Server closed. Goodbye!\n');
+    process.exit(0);
+  });
+});
+
+// Handle window close
+process.on('SIGHUP', () => {
+  console.log('Window closed, shutting down...');
+  server.close(() => {
     process.exit(0);
   });
 });
