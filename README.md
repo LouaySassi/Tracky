@@ -1,4 +1,4 @@
-# 💰 Finance Tracker Desktop App
+# 💰 Tracky - Finance Tracker Desktop App
 
 A local-first personal finance tracker that runs as a Windows desktop application with 100% offline functionality.
 
@@ -28,32 +28,15 @@ A local-first personal finance tracker that runs as a Windows desktop applicatio
    npm run build:electron
    ```
 
-2. **Find your EXE:**
-   - Location: `release/Finance Tracker Setup 1.0.0.exe`
+2. **Find your EXE on Desktop:**
+   - Location: `C:\Users\LouaySassi\Desktop\Tracky-Build\Tracky-Setup-1.0.0.exe`
    - Double-click to install
-   - Desktop shortcut will be created
-
-## 📂 Project Structure
-
-```
-├── server/              # Backend Express server
-│   ├── index.js         # Main server file
-│   ├── database.js      # SQLite database setup
-│   └── routes/          # API endpoints
-├── electron/            # Electron app wrapper
-│   ├── main.js          # Main Electron process
-│   └── preload.js       # Security preload
-├── src/                 # React frontend
-│   ├── api/             # API client
-│   ├── components/      # UI components
-│   └── pages/           # App pages
-└── dist/                # Built frontend (after build)
-```
+   - Desktop shortcut will be created automatically
 
 ## 💾 Data Storage
 
 - All data stored in SQLite database
-- Location: `%APPDATA%/FinanceTracker/finance-tracker.db`
+- Location: `%APPDATA%/Tracky/tracky.db`
 - Persists forever unless manually deleted
 - No internet required
 
@@ -67,9 +50,10 @@ A local-first personal finance tracker that runs as a Windows desktop applicatio
 ## 📝 Available Scripts
 
 - `npm run dev` - Run in development mode
-- `npm run build:electron` - Build Windows EXE
+- `npm run build:electron` - Build Windows EXE (output to Desktop)
 - `npm run dev:backend` - Run backend only
 - `npm run dev:frontend` - Run frontend only
+- `npm start` - Run Electron app
 
 ## ✨ Features
 
@@ -81,6 +65,32 @@ A local-first personal finance tracker that runs as a Windows desktop applicatio
 - ✅ Goals & savings
 - ✅ Transaction history
 - ✅ Analytics dashboard
+
+## 📍 Build Output Location
+
+The EXE will be created at:
+```
+C:\Users\LouaySassi\Desktop\Tracky-Build\Tracky-Setup-1.0.0.exe
+```
+
+## 🔧 Troubleshooting
+
+### If npm install fails on better-sqlite3:
+
+```bash
+# Install Visual Studio Build Tools
+npm install --global windows-build-tools
+
+# Then retry
+npm install
+```
+
+### To reset all data:
+
+Delete this folder:
+```
+%APPDATA%/Tracky
+```
 
 ---
 

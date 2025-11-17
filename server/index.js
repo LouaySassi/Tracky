@@ -24,7 +24,9 @@ app.use('/api/settings', require('./routes/settings'));
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ 
-    status: 'ok', 
+    status: 'ok',
+    app: 'Tracky',
+    version: '1.0.0',
     database: dbPath,
     timestamp: new Date().toISOString()
   });
@@ -40,7 +42,7 @@ app.get('*', (req, res) => {
 
 // Start server
 const server = app.listen(PORT, () => {
-  console.log(`\n🚀 Finance Tracker Server Running!`);
+  console.log(`\n💰 Tracky Server Running!`);
   console.log(`📊 Dashboard: http://localhost:${PORT}`);
   console.log(`💾 Database: ${dbPath}`);
   console.log(`⏰ Started: ${new Date().toLocaleString()}\n`);

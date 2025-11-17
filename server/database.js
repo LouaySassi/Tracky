@@ -6,14 +6,14 @@ const fs = require('fs');
 const getDataPath = () => {
   const userDataPath = process.env.APPDATA || 
     (process.platform === 'darwin' ? process.env.HOME + '/Library/Application Support' : process.env.HOME);
-  const appDataDir = path.join(userDataPath, 'FinanceTracker');
+  const appDataDir = path.join(userDataPath, 'Tracky');
   
   // Create directory if it doesn't exist
   if (!fs.existsSync(appDataDir)) {
     fs.mkdirSync(appDataDir, { recursive: true });
   }
   
-  return path.join(appDataDir, 'finance-tracker.db');
+  return path.join(appDataDir, 'tracky.db');
 };
 
 const dbPath = getDataPath();

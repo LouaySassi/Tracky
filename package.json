@@ -1,9 +1,11 @@
 {
-  "name": "finance-tracker-desktop",
+  "name": "tracky",
   "version": "1.0.0",
-  "description": "Local Finance Tracker Desktop Application",
+  "description": "Tracky - Local Finance Tracker Desktop Application",
   "private": true,
   "main": "electron/main.js",
+  "type": "commonjs",
+  "author": "LouaySassi",
   "scripts": {
     "dev:frontend": "vite",
     "dev:backend": "node server/index.js",
@@ -14,10 +16,10 @@
     "preview": "vite preview"
   },
   "build": {
-    "appId": "com.financetracker.app",
-    "productName": "Finance Tracker",
+    "appId": "com.tracky.app",
+    "productName": "Tracky",
     "directories": {
-      "output": "release"
+      "output": "C:/Users/LouaySassi/Desktop/Tracky-Build"
     },
     "files": [
       "dist/**/*",
@@ -33,13 +35,19 @@
           "arch": ["x64"]
         }
       ],
-      "icon": "public/icon.ico"
+      "icon": "public/icon.ico",
+      "artifactName": "Tracky-Setup-${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "installerIcon": "public/icon.ico",
+      "uninstallerIcon": "public/icon.ico",
+      "installerHeaderIcon": "public/icon.ico",
+      "deleteAppDataOnUninstall": false,
+      "shortcutName": "Tracky"
     }
   },
   "dependencies": {

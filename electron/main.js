@@ -38,8 +38,9 @@ function createWindow() {
     height: 900,
     minWidth: 1000,
     minHeight: 600,
+    title: 'Tracky - Finance Tracker',
     backgroundColor: '#1a1a1a',
-    icon: path.join(__dirname, '../public/icon.png'),
+    icon: path.join(__dirname, '../public/icon.ico'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
