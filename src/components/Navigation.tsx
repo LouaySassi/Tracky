@@ -1,22 +1,17 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { HomeIcon, BarChart3Icon } from 'lucide-react';
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import { HomeIcon, BarChart3Icon } from 'lucide-react'
+import { MonthProgressBar } from './MonthProgressBar'
 
 export function Navigation() {
   return (
-    <nav className="bg-dark-card border-b border-dark-border">
+    <nav className="sticky top-0 z-50 bg-dark-card/80 backdrop-blur-md border-b border-dark-border">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-3">
-              <img 
-                src="/icon.png" 
-                alt="Tracky Logo" 
-                className="w-8 h-8"
-              />
-              <h1 className="text-xl font-bold text-text-primary">
-                Tracky
-              </h1>
+              <img src="/icon.png" alt="Tracky Logo" className="w-8 h-8" />
+              <h1 className="text-xl font-bold text-text-primary">Tracky</h1>
             </div>
             <div className="flex gap-4">
               <NavLink
@@ -47,8 +42,11 @@ export function Navigation() {
               </NavLink>
             </div>
           </div>
+          <div className="w-96">
+            <MonthProgressBar />
+          </div>
         </div>
       </div>
     </nav>
-  );
+  )
 }

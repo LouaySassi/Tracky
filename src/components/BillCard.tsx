@@ -12,6 +12,7 @@ interface BillCardProps {
   onAddPayment: (amount: number, note?: string) => void;
   onDeleteTransaction: (transactionId: string) => void;
   onRemove: () => void;
+  onRemoveFromAllMonths: () => void;
 }
 export function BillCard({
   bill,
@@ -19,12 +20,14 @@ export function BillCard({
   onUpdateBudget,
   onAddPayment,
   onDeleteTransaction,
-  onRemove
+  onRemove,
+  onRemoveFromAllMonths,
 }: BillCardProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
   const [showHistory, setShowHistory] = useState(false);
+  const [showDeleteMenu, setShowDeleteMenu] = useState(false);
   const percentage = bill.spent / bill.budget * 100;
   const isOverBudget = bill.spent > bill.budget;
   const handleAdd = () => {
@@ -58,12 +61,28 @@ export function BillCard({
                 </span>}
             </div>
           </div>
-          <button onClick={e => {
-          e.stopPropagation();
-          onRemove();
-        }} className="p-1.5 hover:bg-red-500/20 rounded transition-all" aria-label="Remove bill">
-            <Trash2Icon className="w-4 h-4 text-red-400" />
-          </button>
+          <div className="relative">
+            <button onClick={e => {
+            e.stopPropagation();
+            setShowDeleteMenu((prev) => !prev);
+          }} className="p-1.5 hover:bg-red-500/20 rounded transition-all" aria-label="Remove bill">
+              <Trash2Icon className="w-4 h-4 text-red-400" />
+            </button>
+            {showDeleteMenu && <div onClick={(e) => e.stopPropagation()} onMouseLeave={() => setShowDeleteMenu(false)} className="absolute right-0 mt-2 w-44 bg-dark-card border border-dark-border rounded-xl shadow-xl z-20">
+                <button onClick={() => {
+                  setShowDeleteMenu(false);
+                  onRemove();
+                }} className="w-full text-left px-3 py-2 text-sm text-text-primary hover:bg-dark-bg rounded-t-xl">
+                  Delete from this month
+                </button>
+                <button onClick={() => {
+                  setShowDeleteMenu(false);
+                  onRemoveFromAllMonths();
+                }} className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-dark-bg rounded-b-xl">
+                  Delete from all months
+                </button>
+              </div>}
+          </div>
         </div>
 
         {!isAdding ? <>

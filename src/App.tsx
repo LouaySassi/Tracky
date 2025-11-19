@@ -4,6 +4,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Analytics } from './pages/Analytics';
 import { Navigation } from './components/Navigation';
 import { PaydayPrompt } from './components/PaydayPrompt';
+import { AIChat } from './components/AIChat';
 import { FinancialData, MonthlyBillItem, Goal, Expense, Transaction, GlobalSettings } from './types';
 import { apiClient } from './api/client';
 
@@ -67,6 +68,25 @@ export function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   const currentData = allMonthsData[currentMonthKey] || getEmptyMonthData(settings.defaultSalary);
+
+  const createMonthDataFromTemplate = (template: FinancialData): FinancialData => {
+    const baseSalary = template.monthlySalary || settings.defaultSalary;
+    return {
+      monthlySalary: baseSalary,
+      extraFunds: 0,
+      monthlyBills: template.monthlyBills.map((bill) => ({
+        ...bill,
+        spent: 0,
+        isPaid: false,
+      })),
+      expenses: [],
+      totalSavings: template.totalSavings,
+      goals: template.goals.map((goal) => ({ ...goal })),
+      transactions: [],
+      lastPayday: undefined,
+      lastPaydayConfirmed: undefined,
+    };
+  };
 
   // Load settings from API
   useEffect(() => {
@@ -167,6 +187,20 @@ export function App() {
     }));
   };
 
+  const addMonthlyBill = (bill: MonthlyBillItem) => {
+    setAllMonthsData((prev) => {
+      const source = Object.keys(prev).length ? prev : { [currentMonthKey]: getEmptyMonthData(settings.defaultSalary) };
+      const updated: MonthlyDataStore = {};
+      Object.entries(source).forEach(([key, data]) => {
+        updated[key] = {
+          ...data,
+          monthlyBills: [...data.monthlyBills, { ...bill }],
+        };
+      });
+      return updated;
+    });
+  };
+
   const calculateRemainingFunds = () => {
     if (!currentData.monthlySalary) return 0;
     const totalBillsSpent = currentData.monthlyBills.reduce((sum, b) => sum + b.spent, 0);
@@ -210,15 +244,13 @@ export function App() {
     const nextMonthKey = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}`;
     
     if (!allMonthsData[nextMonthKey]) {
-      const newMonthData: FinancialData = {
-        ...getEmptyMonthData(settings.defaultSalary),
-        totalSavings: currentData.totalSavings + (remaining > 0 ? remaining : 0),
-        goals: currentData.goals.map(g => ({ ...g }))
-      };
-      
-      setAllMonthsData(prev => ({
+      const newMonthData = createMonthDataFromTemplate(currentData);
+      newMonthData.totalSavings = currentData.totalSavings + (remaining > 0 ? remaining : 0);
+      newMonthData.goals = currentData.goals.map((g) => ({ ...g }));
+
+      setAllMonthsData((prev) => ({
         ...prev,
-        [nextMonthKey]: newMonthData
+        [nextMonthKey]: newMonthData,
       }));
     }
     
@@ -258,6 +290,7 @@ export function App() {
                 setSettings={setSettings}
                 currentData={currentData}
                 updateCurrentMonth={updateCurrentMonth}
+                onAddMonthlyBill={addMonthlyBill}
               />
             } 
           />
@@ -277,6 +310,11 @@ export function App() {
           onYes={handlePaydayYes}
           onNo={handlePaydayNo}
           remainingAmount={calculateRemainingFunds()}
+        />
+        <AIChat 
+          currentData={currentData} 
+          onUpdateData={(newData) => updateCurrentMonth(() => newData)} 
+          onAddMonthlyBill={addMonthlyBill}
         />
       </div>
     </BrowserRouter>

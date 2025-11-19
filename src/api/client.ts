@@ -66,6 +66,17 @@ export const apiClient = {
     return response.json();
   },
 
+  // AI Chat
+  async chatWithAI(message: string, context: any, history: any[] = []) {
+    const response = await fetch(`${API_BASE}/ai/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message, context, history }),
+    });
+    if (!response.ok) throw new Error('Failed to chat with AI');
+    return response.json();
+  },
+
   // Health check
   async checkHealth() {
     const response = await fetch(`${API_BASE}/health`);

@@ -2,18 +2,13 @@
 title Tracky Server
 color 0A
 
-cd /d "%~dp0"
+============================================
+  TRACKY - Finance Tracker
+============================================
 
-echo.
-echo ============================================
-echo    TRACKY - Finance Tracker
-echo ============================================
-echo.
-echo Starting server...
-echo.
+Starting server...
 
+cd /d "C:\Users\LCSassi\Desktop\school\Tracky"
 node server/index.js
 
-echo.
-echo Server stopped.
 pause

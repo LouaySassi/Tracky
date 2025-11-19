@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { TrendingUpIcon, TrendingDownIcon, DollarSignIcon, CalendarIcon, PiggyBankIcon, AlertCircleIcon } from 'lucide-react';
 import { FinancialData, GlobalSettings } from '../types';
+import { MonthlyAnalytics } from '../components/MonthlyAnalytics';
 interface MonthlyDataStore {
   [monthKey: string]: FinancialData;
 }
@@ -162,6 +163,12 @@ export function Analytics({
     }
     return tips;
   }, [metrics, spendingChange, topCategories]);
+
+  const absoluteLatestKey = monthKeys[monthKeys.length - 1];
+  const absolutePreviousKey = monthKeys[monthKeys.length - 2];
+  const absoluteLatestData = allMonthsData[absoluteLatestKey];
+  const absolutePreviousData = absolutePreviousKey ? allMonthsData[absolutePreviousKey] : undefined;
+
   return <div className="max-w-7xl mx-auto px-6 py-8">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold text-text-primary">
@@ -173,6 +180,14 @@ export function Analytics({
             </button>)}
         </div>
       </div>
+      
+      {absoluteLatestData && (
+        <MonthlyAnalytics 
+          currentMonthData={absoluteLatestData} 
+          previousMonthData={absolutePreviousData} 
+        />
+      )}
+
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-dark-card rounded-xl p-6">
